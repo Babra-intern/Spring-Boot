@@ -1,15 +1,35 @@
 package com.example.quizapp;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.example.quizapp.Service.QuestionService;
+import com.example.quizapp.model.Question;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("question")
 public class QuestionController {
-@GetMapping("allquestions")
-    public String getAllQuestions(){
-        return "Hi , These are your questions";
+
+    @Autowired
+    QuestionService questionService;
+
+    @GetMapping("allQuestions")
+    public ResponseEntity<List<Question>> getAllQuestions(){
+        return questionService.getAllQuestions();
+
+    }
+
+    @GetMapping("category/{category}")
+    public ResponseEntity<List<Question>> getAllQuestionsByCategory(@PathVariable("category") String category){
+        return questionService.getAllQuestionsByCategory(category);
+    }
+
+    @PostMapping("add")
+    public ResponseEntity<String> addQuestion(@RequestBody Question question){
+        return  questionService.addQuestion(question);
 
     }
 }
+
